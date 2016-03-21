@@ -122,8 +122,8 @@ void serialEvent() {
 }
 
 void sensorluz(){
-  valor = (int)analogRead(ldr);
-  Serial.println("Valor obtenido"+valor);
+  //valor = (int)analogRead(ldr);
+  Serial.println("Valor obtenido"+(int)analogRead(ldr));
   closed();
 }//end closed
 
