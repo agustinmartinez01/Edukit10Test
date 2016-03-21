@@ -2,10 +2,10 @@
 //leds
 #define digitalled2 2
 #define digitalled3 3
-#define  digitalled4 4
-#define  digitalled7 7
+#define digitalled4 4
+#define digitalled7 7
 #define digitalled8 8
-#define  digitalled9 9
+#define digitalled9 9
 
 //INterruptores
 #define interr1 10
@@ -21,10 +21,10 @@
 Servo myservo;
 Servo myservo1;
 int pos = 0;
-//LDR
-#define ldr 7
-int valor = 0;
 
+//Baterias
+int valorPort = 0;
+float voltajePort = 0;
 
 
 String inputString = "";         // a string to hold incoming data
@@ -52,8 +52,7 @@ void setup() {
 //motor
   pinMode(mot,OUTPUT);
   pinMode(mot1,OUTPUT);
-// LDR
-  pinMode(ldr,INPUT);
+
 
   
   Serial.println("Test Placa Edukit 10");
@@ -62,7 +61,8 @@ void setup() {
   Serial.println("2----->INterruptores");
   Serial.println("3----->Servos");
   Serial.println("4----->Motor");
-  Serial.println("5----->Ldr");
+  //Serial.println("5----->Ldr");
+  Serial.println("6----->Baterias");
   // reserve 200 bytes for the inputString:
   inputString.reserve(200);
 }
@@ -83,12 +83,18 @@ void loop() {
           break;
     case 3:
           serv();
+          closed();
           break;
     case 4:
           motor();
           break;
-   case 5:
+   /*case 5:
           sensorluz();
+          //Serial.println("Valor obtenido"+(int)analogRead(ldr));
+          //closed();
+          break;*/
+  case 6:
+          bateria();
           break;
     case 0:
           closed();
@@ -121,11 +127,20 @@ void serialEvent() {
   }
 }
 
-void sensorluz(){
-  //valor = (int)analogRead(ldr);
-  Serial.println("Valor obtenido"+(int)analogRead(ldr));
+void bateria(){
+    valorPort=analogRead(6);
+    voltajePort=((valorPort*12)/737)/2;
+    Serial.println(valorPort);
+    Serial.print("Voltaje obtenido  ");
+    Serial.println(voltajePort);
+    closed();
+}
+
+/*void sensorluz(){
+  valor = (int)analogRead(ldr);
+  Serial.println("Valor obtenido"+valor);
   closed();
-}//end closed
+}//end closed*/
 
 
 //funcion closed
@@ -162,7 +177,7 @@ void serv(){
   } 
   delay(500);
   Serial.println("Gira menos 180 grados");
-  for(pos = 180; pos>=0; pos-=1)      
+  for(pos = 180; pos>=10; pos-=1)      
   {                                
     myservo.write(pos);  
     myservo1.write(pos);             
